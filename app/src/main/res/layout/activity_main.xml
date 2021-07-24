@@ -5,22 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical"
     android:background="#000000"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="180dp"
-            android:layout_height="70dp"
-            android:text="Start Game"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="5dp"
-            android:onClick="startGame">
+        android:layout_height="wrap_content">
 
-        </Button>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="247dp"
+        android:layout_height="281dp"
+        app:srcCompat="@drawable/_137a8cc_32f3_4621_9a4b_2b3ab45f88b9" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="165dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="10dp"
+        android:onClick="singleplayer"
+        android:text="Single Player 😌">
+
+    </Button>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="165dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:onClick="friend"
+        android:text="VS computer (Easy mode 🙂)" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="165dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:onClick="computer"
+        android:text="VS computer (Hard mode 😈)" />
+
+
 
 </LinearLayout>

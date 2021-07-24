@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,9 +15,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void startGame(View view) {
+    public void singleplayer(View view) {
         GameView gameView=new GameView(this);
         setContentView(gameView);
+    }
+
+    public void friend(View view) {
+        GameView2 gameview2 = new GameView2(this);
+        setContentView(gameview2);
+    }
+
+    public void computer(View view) {
+        GameView3 gameview3 = new GameView3(this);
+        setContentView(gameview3);
     }
 }
 
