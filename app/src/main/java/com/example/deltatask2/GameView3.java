@@ -27,7 +27,7 @@ public class GameView3 extends View{
     SharedPreferences sharedPreferences;
     Boolean audioState;
     Velocity velocity = new Velocity(25,32);
-    Velocity velocity2 = new Velocity(70,85);
+    Velocity velocity2 = new Velocity(25,32);
     Handler handler;
     final long UPDATE_MILLI = 30;
     Runnable runnable;
