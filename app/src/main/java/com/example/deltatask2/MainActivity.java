@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    SharedPreferences sharedPreferences;
+    Boolean audioState;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences("my_pref",0);
+        audioState = sharedPreferences.getBoolean("audioState",true);
     }
 
     public void singleplayer(View view) {

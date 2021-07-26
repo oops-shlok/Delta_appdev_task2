@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,10 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Build;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -26,6 +24,8 @@ import java.util.Random;
 
 public class GameView2 extends View{
     Context context;
+    SharedPreferences sharedPreferences;
+    Boolean audioState;
     Velocity velocity = new Velocity(25,32);
     Velocity velocity2 = new Velocity(25,32);
     Handler handler;
@@ -42,10 +42,10 @@ public class GameView2 extends View{
     int point2=0;
     Bitmap ball,paddle;
     int dWidth,dHeight;
+    MediaPlayer ball_hit,ball_miss;
     Random random = new Random();
     Rect rect = new Rect();
     public MotionEvent event;
-    private SoundPool soundPool;
 
 
     public GameView2(Context context) {
@@ -60,6 +60,8 @@ public class GameView2 extends View{
                 invalidate();
             }
         };
+        ball_hit = MediaPlayer.create(context,R.raw.hit);
+        ball_miss = MediaPlayer.create(context,R.raw.miss);
         textPaint.setColor(Color.LTGRAY);
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTextSize(TEXT_SIZE);
@@ -68,12 +70,14 @@ public class GameView2 extends View{
         display.getSize(size);
         dWidth = size.x;
         dHeight = size.y;
-        ballx_cor=random.nextInt(dWidth);
+        ballx_cor=random.nextInt(dWidth-200);
         bally_cor=random.nextInt(dHeight/2);
         paddleY=(dHeight*4/5);
         paddleY_2 = (dHeight*1/10);
         paddleX=dWidth/2-paddle.getWidth()/2;
         paddleX_2=dWidth/2-paddle.getWidth()/2;
+        sharedPreferences = context.getSharedPreferences("my_pref",0);
+        audioState = sharedPreferences.getBoolean("audioState",true);
         dialog = new Dialog(context);
 
     }
@@ -85,54 +89,59 @@ public class GameView2 extends View{
         ballx_cor +=velocity.getX();
         bally_cor+=velocity.getY();
         paddleX_2 += velocity2.getX();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_GAME)
-                    .build();
-            soundPool = new SoundPool.Builder()
-                    .setMaxStreams(2)
-                    .setAudioAttributes(audioAttributes)
-                    .build();
-        } else{
-            soundPool = new SoundPool(2,AudioManager.STREAM_MUSIC,0);
-        }
-
-        final int ball_hit = soundPool.load(context,R.raw.hit,1);
-        int ball_miss = soundPool.load(context,R.raw.miss,2);
 
         if((ballx_cor>=dWidth-ball.getWidth())|| ballx_cor<=0){
+            if(ball_hit != null && audioState){
+                ball_hit.start();
+            }
             velocity.setX(velocity.getX() * -1);
         }
         if(bally_cor<=0){
+            ballx_cor= 500;
+            bally_cor=800;
+            if(ball_miss != null && audioState){
+                ball_miss.start();
+            }
+            velocity.setX(0);
+            velocity.setY(0);
             openDialog();
-            soundPool.play(ball_miss,1,1,1,0,1);
+
         }
         if((paddleX_2>=dWidth-paddle.getWidth())||paddleX_2<=0) {
+            if(ball_hit != null && audioState){
+                ball_hit.start();
+            }
             velocity2.setX(velocity2.getX() * -1);
         }
 
         if(bally_cor>(paddleY+paddle.getHeight())){
             ballx_cor= 500;
             bally_cor=800;
+            if(ball_miss != null && audioState){
+                ball_miss.start();
+            }
             velocity.setX(0);
             velocity.setY(0);
             openDialog();
-            soundPool.play(ball_miss,1,1,1,0,1);
+
         }
 
         if((ballx_cor+ball.getWidth() >=paddleX)&&(ballx_cor<=(paddleX+paddle.getWidth()))&&((bally_cor+ball.getHeight())>=paddleY)&&(bally_cor+ball.getHeight())<=(paddleY+paddle.getHeight()+50)){
+            if(ball_hit != null && audioState){
+                ball_hit.start();
+            }
             velocity.setX(velocity.getX()+1);
             velocity.setY((velocity.getY()+1)*-1);
             point1++;
-            soundPool.play(ball_hit,1,1,1,0,1);
         }
 
         if((ballx_cor+ball.getWidth() >=paddleX_2)&&(ballx_cor<=(paddleX_2+paddle.getWidth()))&&((bally_cor+ball.getHeight())>=paddleY_2+20)&&(bally_cor+ball.getHeight())<=(paddleY_2+paddle.getHeight()+50)){
+            if(ball_hit != null && audioState){
+                ball_hit.start();
+            }
             velocity.setX(velocity.getX()+1);
             velocity.setY((velocity.getY()+1)*-1);
             point2++;
-            soundPool.play(ball_hit,1,1,1,0,1);
         }
 
 
@@ -140,7 +149,7 @@ public class GameView2 extends View{
         canvas.drawBitmap(paddle,paddleX,paddleY,null);
         canvas.drawBitmap(paddle,paddleX_2,paddleY_2,null);
         canvas.drawText("Computer: "+point2,380,150,textPaint);
-        canvas.drawText("You: "+point1,440,1550,textPaint);
+        canvas.drawText("You: "+point1,440,dHeight-200,textPaint);
         handler.postDelayed(runnable,UPDATE_MILLI);
     }
 

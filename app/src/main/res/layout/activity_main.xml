@@ -22,8 +22,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="165dp"
-        android:layout_height="65dp"
+        android:layout_width="189dp"
+        android:layout_height="77dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="10dp"
         android:onClick="singleplayer"
@@ -33,21 +33,21 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="165dp"
-        android:layout_height="65dp"
+        android:layout_width="186dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
         android:onClick="friend"
         android:text="VS computer (Easy mode 🙂)" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="165dp"
-        android:layout_height="65dp"
+        android:layout_width="187dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
         android:onClick="computer"
         android:text="VS computer (Hard mode 😈)" />
 
